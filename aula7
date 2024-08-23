@@ -1,100 +1,18 @@
-const canvas = document.createElement('canvas');
-canvas.width = 500;
-canvas.height = 500;
-document.body.appendChild(canvas);
-const ctx = canvas.getContext('2d');
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/addons/p5.sound.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
 
-let rectangles = [];
-let circles = [];
+  </head>
+  <body>
+    <main>
+    </main>
+    <script src="sketch.js"></script>
+  </body>
+</html>
 
-// Função para criar um retângulo aleatório
-function createRectangle() {
-  const x = Math.random() * canvas.width;
-  const y = Math.random() * canvas.heigth;
-  const width = Math.random() * 50 +10 ;
-  const heigth = Math.random() * 50 +10;
-  const color = getRandomColor();
-  const speedX = Math.random() * 2 - 1;
-  const speedY = Math.random() * 2 - 1;
-  return { x, y, width, heigth, color, speedX, speedY };
-}
 
-// Função para criar um círculo aleatório
-function createCircle() {
-  const x = Math.random() * canvas.width;
-  const y = Math.random() * canvas.heigth;
-  const radious = Math.random() * 20 + 5;
-  const color = getRandomColor();
-  const speedX = Math.random() * 2 - 1;
-  const speedY = Math.random() * 2 - 1;
-  return { x, y, radious, color, speedX, speedY };
-}
 
-// Função para obter uma cor aleatória
-function getRandomColor() {
-  const r = Math.floor(Math.random() * 256);
-  const g = Math.floor(Math.random() * 256);
-  const b = Math.floor(Math.random() * 256);
-  return 'rgb (${r}, ${g} ${b})';
-}
-
-// Função para atualizar as formas geométricas
-function update() {
-  rectangles.forEach (rectangle => {
-    rectangle.x += rectangle.speedX;
-    rectangle.y += rectangle.speedY;
-    if (rectangle.x < 0 || rectangle.x > canvas.width - rectangle.width) {
-      rectangle.speedX *= -1;
-    }
-    if (rectangle.y < 0 || rectangle.y > canvas.heigth - rectangle.heigth) {
-      rectangle.speedX *= -1;
-    }
-  });
- 
-  circles.forEach (circle => {
-    circle.x += circle.speedX;
-    circle.y += circle.speedY;
-    if (circle.x < 0 || circle.x > canvas.width - circle.radious) {
-      circle.speedX *= -1;
-    }
-    if (circle.y < 0 || circle.y > canvas.heigth - circle.radious)
-      circle.speedY *= -1;
-   
-  });
-}
-
-// Função para desenhar as formas geométricas no canvas
-function draw(){
-  ctx.clearRect(0, 0, canvas.width, canvas.heigth);
- 
-  rectangles.forEach(rectangle => {
-    ctx.fillStyle = rectangle.color;
-    ctx.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.heigth);
-  });
- 
-  circles.forEach(circle => {
-    ctx.beginPath();
-    ctx.arc(circle.x, circle.y, circle.radious, 0, Math.PI * 2);
-    ctx.fillStyle = circle.color;
-    ctx.fill();
-    ctx.closePath();
-  });
-}
-
-// Função para iniciar a animação
-function startAnimation() {
-  for (let i = 0; i < 10; i++) {
-    rectangles.push(createRectangle());
-    circles.push(createCircle());
-  }
- 
-  function animate() {
-    update();
-    draw();
-    requestAnimationFrame(animate);
-  }
- 
-  animate();
-}
-
-startAnimation();
